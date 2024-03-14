@@ -25,6 +25,7 @@ Route::controller(PurchasesController::class)->group(function () {
     Route::get('/purchases', 'index')->name('purchases.index');
     Route::post('/purchases', 'store')->name('purchases.store');
     Route::put('/purchases/{id}', 'update')->name('purchases.update');
+    Route::get('/purchases/fork', 'forkToSeries')->name('purchases.fork');
     Route::get('/purchases/all', 'getPurchases')->name('purchases.all');
 });
 

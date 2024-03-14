@@ -2,5 +2,12 @@
     id="{{ 'update_purchase_fields_' . $purchase->id }}" method="POST">
     @csrf
     @method('PUT')
-    <x-purchase-fields :purchase="$purchase" :categories="$categories" :types="$types" :action="'update'" />
+    <x-purchase-fields 
+        :purchase="$purchase" 
+        :types="$types" 
+        :groups="$groups" 
+        :statuses="$statuses"
+        :depts="$depts"
+        :action="'update'" 
+    />
 </form>

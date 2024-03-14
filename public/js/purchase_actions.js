@@ -1,29 +1,3 @@
-function getPlanFeeById(id, planFeeId) {
-    $.ajax({
-        type: "GET",
-        url: `${baseUrl}/publisher/plans/get_plan_fee?id=${id}`,
-        success: function (response) {
-            planFeeId.val(response);
-        },
-        error: function (error) {
-            console.log(error);
-        },
-    });
-}
-
-// Change value of plan_fee field when plan select is changed - for update action
-$("body").on("change", ".plan-select", function () {
-    getPlanFeeById(
-        $(this).val(),
-        $(`#plan_fee_${$(this).attr("id").replace("plan_", "")}`)
-    );
-});
-
-// Change value of plan_fee field when plan select is changed - for add action
-$("#add_assignee_plan").on("change", function () {
-    getPlanFeeById($(this).val(), $("#add_assignee_plan_fee"));
-});
-
 function associateErrors(errors, fields) {
     const getMessage = (fieldErrors, field) =>
         fieldErrors.forEach((error) => {
@@ -37,15 +11,15 @@ function associateErrors(errors, fields) {
                 );
         });
 
-    if (errors.assignee) getMessage(errors.assignee, fields.assignee);
-    if (errors.assignee_code)
-        getMessage(errors.assignee_code, fields.assignee_code);
-    if (errors.plan) getMessage(errors.plan, fields.plan);
-    if (errors.position) getMessage(errors.position, fields.position);
-
-    if (errors.account_no) getMessage(errors.account_no, fields.account_no);
-    if (errors.phone_no) getMessage(errors.phone_no, fields.phone_no);
-    if (errors.allowance) getMessage(errors.allowance, fields.allowance);
+    if (errors.purchase) getMessage(errors.purchase, fields.purchase);
+    if (errors.purchase_category)
+        getMessage(errors.purchase_category, fields.purchase_category);
+    if (errors.purchase_type)
+        getMessage(errors.purchase_type, fields.purchase_type);
+    if (errors.dept) getMessage(errors.dept, fields.dept);
+    if (errors.status) getMessage(errors.status, fields.status);
+    if (errors.allocated_budget_php)
+        getMessage(errors.allocated_budget_php, fields.allocated_budget_php);
 }
 
 function clearErrorMsg(fields) {
@@ -75,9 +49,8 @@ $("body").on("submit", ".update-purchase", function (e) {
     const id = $(this).attr("id").replace("update_purchase_fields_", "");
 
     const fields = {
-        account_no: $(`#account_no_${id}`),
-        phone_no: $(`#phone_no_${id}`),
-        allowance: $(`#allowance_${id}`),
+        purchase: $(`#purchase_${id}`),
+        allocated_budget_php: $(`#allocated_budget_php_${id}`),
     };
 
     clearErrorMsg(fields);
@@ -91,7 +64,7 @@ $("body").on("submit", ".update-purchase", function (e) {
 
     $.ajax({
         url: action,
-        type: "PUT",
+        type: "put",
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
@@ -101,6 +74,8 @@ $("body").on("submit", ".update-purchase", function (e) {
             if (data.response === "success")
                 alert.attr("class", "alert alert-success").text(data.alert);
             else alert.attr("class", "alert alert-danger").text(data.alert);
+
+            getPurchases($("#series_select").val());
 
             updateModal.hide();
         },
@@ -117,13 +92,12 @@ $("#add_purchase_fields").on("submit", function (e) {
     const action = $(this).attr("action");
 
     const fields = {
-        assignee: $("#assignee"),
-        assignee_code: $("#assignee_code"),
-        account_no: $("#account_no"),
-        phone_no: $("#phone_no"),
-        allowance: $("#allowance"),
-        position: $("#position"),
-        plan: $("#add_assignee_plan"),
+        purchase: $("#purchase"),
+        purchase_category: $("#purchase_category"),
+        purchase_type: $("#purchase_type"),
+        dept: $("#dept"),
+        status: $("#status"),
+        allocated_budget_php: $("#allocated_budget_php"),
     };
 
     clearErrorMsg(fields);
@@ -136,14 +110,16 @@ $("#add_purchase_fields").on("submit", function (e) {
     clearAlert(alert);
 
     $.ajax({
-        url: action,
-        type: "POST",
+        url: `${action}?series_id=${$("#series_select").val()}`,
+        type: "post",
         data: $(this).serialize(),
         success: function (data) {
             alert.attr("hidden", false);
             if (data.response === "success")
                 alert.attr("class", "alert alert-success").text(data.alert);
             else alert.attr("class", "alert alert-danger").text(data.alert);
+
+            getPurchases($("#series_select").val());
 
             updateModal.hide();
             $("#add_purchase_fields").trigger("reset");
@@ -153,3 +129,6 @@ $("#add_purchase_fields").on("submit", function (e) {
         },
     });
 });
+
+const date = new Date();
+console.log("current date: " + date.getMonth());

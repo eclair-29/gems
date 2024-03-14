@@ -12,15 +12,18 @@ const purchasesTableCols = [
             </a>
         `,
     },
+    { data: "dept" },
     {
         render: (data, type, row, index) => index.row + 1,
     },
     { data: "description" },
     { data: "purchase_category" },
     { data: "purchase_type" },
+    { data: "allocated_budget_php" },
+    { data: "allocated_budget_usd" },
+    { data: "fiscal" },
+    { data: "series" },
     { data: "status" },
-    { data: "default_expense_php" },
-    { data: "default_expense_usd" },
     { data: "notes" },
     { data: "updated_at" },
 ];
@@ -35,6 +38,10 @@ const purchasesTableColDefs = [
         className: "text-capitalize",
     },
     {
+        targets: 6,
+        className: "text-capitalize",
+    },
+    {
         targets: 8,
         className: "notes-cell",
     },
@@ -45,7 +52,7 @@ let purchases_table = new DataTable("#purchases_table", {
     data: [],
     columns: purchasesTableCols,
     columnDefs: purchasesTableColDefs,
-    order: [[2, "asc"]],
+    order: [[12, "desc"]],
 });
 
 function overrideTable(id) {
@@ -65,12 +72,11 @@ function overrideTable(id) {
 overrideTable("purchases");
 
 // load datatable data on page load
-function getPurchases() {
+function getPurchases(series_id) {
     $.ajax({
         type: "get",
-        url: `${baseUrl}/purchases/all`,
+        url: `${baseUrl}/purchases/all?series_id=${series_id}`,
         success: function (response) {
-            console.log(response);
             purchases_table.clear();
             purchases_table.rows.add(response.data).draw();
         },
@@ -80,4 +86,7 @@ function getPurchases() {
     });
 }
 
-getPurchases();
+// load datatable data
+$("#series_select").on("change", function () {
+    getPurchases($(this).val());
+});

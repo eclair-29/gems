@@ -21,6 +21,11 @@ return new class extends Migration
             $table->foreign('purchase_id')->references('id')->on('purchases');
             $table->unsignedBigInteger('status_id');
             $table->foreign('status_id')->references('id')->on('statuses');
+            $table->double('actual_php', 15, 2);
+            $table->double('actual_usd', 15, 2);
+            $table->double('saving_php', 15, 2);
+            $table->double('saving_usd', 15, 2);
+            $table->string('notes')->nullable();
             $table->timestamps();
         });
     }

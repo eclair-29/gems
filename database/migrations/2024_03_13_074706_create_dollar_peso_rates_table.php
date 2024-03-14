@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('purchase_types', function (Blueprint $table) {
+        Schema::create('dollar_peso_rates', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
-            // $table->unsignedBigInteger('purchase_category_id');
-            // $table->foreign('purchase_category_id')->references('id')->on('purchase_categories');
+            $table->float('rate', 8, 2)->default(55.50);
+            $table->unsignedBigInteger('series_id');
+            $table->foreign('series_id')->references('id')->on('series');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('purchase_types');
+        Schema::dropIfExists('dollar_peso_rates');
     }
 };

@@ -22,9 +22,13 @@ return new class extends Migration
             $table->foreign('purchase_type_id')->references('id')->on('purchase_types');
             $table->unsignedBigInteger('purchase_category_id');
             $table->foreign('purchase_category_id')->references('id')->on('purchase_categories');
-            $table->float('default_expense_php', 8, 2);
-            $table->float('default_expense_usd', 8, 2);
+            $table->unsignedBigInteger('dept_id');
+            $table->foreign('dept_id')->references('id')->on('depts');
             $table->string('notes')->nullable();
+            $table->double('allocated_budget_php', 15, 2)->default(0);
+            $table->double('allocated_budget_usd', 15, 2)->default(0);
+            $table->unsignedBigInteger('series_id');
+            $table->foreign('series_id')->references('id')->on('series');
             $table->timestamps();
         });
     }

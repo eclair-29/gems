@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,6 +20,10 @@ class DatabaseSeeder extends Seeder
             PurchaseCategoriesSeeder::class,
             PurchaseTypesSeeder::class,
             ActionsSeeder::class,
+            SeriesSeeder::class,
+            DeptsSeeder::class,
+            PurchasesSeeder::class,
+            DollarPesoRatesSeeder::class,
         ]);
     }
 }

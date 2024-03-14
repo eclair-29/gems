@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('purchase_types', function (Blueprint $table) {
+        Schema::create('depts', function (Blueprint $table) {
             $table->id();
             $table->string('description');
-            // $table->unsignedBigInteger('purchase_category_id');
-            // $table->foreign('purchase_category_id')->references('id')->on('purchase_categories');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('purchase_types');
+        Schema::dropIfExists('depts');
     }
 };
