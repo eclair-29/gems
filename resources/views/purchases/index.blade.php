@@ -38,8 +38,8 @@
                                 data-bs-target="#purchase_requests_popup">Requests</button> 
                         </div>-->
                         <div class="input-group w-auto">
-                            <input type="text" class="form-control border-danger fw-bold" readonly value="USD 1"
-                                style="width: 70px">
+                            <input type="text" class="form-control border-danger fw-bold text-center" readonly
+                                value="USD 1.00" style="width: 80px">
                             <button class="btn btn-outline-secondary border-danger bg-danger text-white fw-bold"
                                 type="button" id="button-addon2">PHP 55.50</button>
                         </div>
