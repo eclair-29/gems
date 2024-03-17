@@ -26,6 +26,8 @@ class ActionsSeeder extends Seeder
             ['resource' => 'publisher', 'description' => 'deactivate purchase', 'created_at' => $date],
             ['resource' => 'publisher', 'description' => 'add purchase', 'created_at' => $date],
 
+            ['resource' => 'publisher', 'description' => 'add series dollar to peso rate', 'created_at' => $date],
+
             // ['resource' => 'approver', 'description' => 'approve worksheet', 'created_at' => $date],
             // ['resource' => 'approver', 'description' => 'approve add purchase', 'created_at' => $date],
             // ['resource' => 'approver', 'description' => 'approve update purchase', 'created_at' => $date],

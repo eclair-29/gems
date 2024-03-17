@@ -25,7 +25,7 @@ class UpdatePurchaseRequest extends FormRequest
     {
         return [
             'purchase' => 'required',
-            'allocated_budget_php' => 'required',
+            'allocated_budget_php' => ['required', 'regex:/^(([0-9]*)(\.([0-9]{0,2}+))?)$/'],
         ];
     }
 

@@ -13,4 +13,9 @@ class Series extends Model
     {
         return $this->hasMany(Trend::class);
     }
+
+    public function dollarRate()
+    {
+        return $this->hasOne(DollarRate::class);
+    }
 }

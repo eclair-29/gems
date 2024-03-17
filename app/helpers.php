@@ -26,6 +26,7 @@ function getPurchases($series)
             p.description,
             pc.description as 'purchase_category',
             pt.description as 'purchase_type',
+            dr.rate as 'dollar_rate',
             p.allocated_budget_php,
             p.allocated_budget_usd,
             se.fiscal_description as 'fiscal',
@@ -39,6 +40,7 @@ function getPurchases($series)
             LEFT JOIN statuses s ON p.status_id = s.id
             LEFT JOIN series se ON p.series_id = se.id
             LEFT JOIN depts d ON p.dept_id = d.id
+            LEFT JOIN dollar_rates dr ON se.id = dr.series_id
         WHERE p.series_id = ?",
         [$series]
     );

@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('dollar_peso_rates', function (Blueprint $table) {
+        Schema::create('dollar_rates', function (Blueprint $table) {
             $table->id();
             $table->float('rate', 8, 2)->default(55.50);
             $table->unsignedBigInteger('series_id');
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dollar_peso_rates');
+        Schema::dropIfExists('dollar_rates');
     }
 };

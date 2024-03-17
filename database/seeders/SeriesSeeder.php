@@ -26,8 +26,8 @@ class SeriesSeeder extends Seeder
             ['fiscal' => '2024_H1', 'series' => '2024_09', 'fiscal_description' => '2024 1st Half', 'series_description' => 'Aug 2024', 'created_at' => $date],
             ['fiscal' => '2024_H1', 'series' => '2024_09', 'fiscal_description' => '2024 1st Half', 'series_description' => 'Sep 2024', 'created_at' => $date],
             ['fiscal' => '2024_H1', 'series' => '2024_10', 'fiscal_description' => '2024 1st Half', 'series_description' => 'Oct 2024', 'created_at' => $date],
-            ['fiscal' => '2024_H2', 'series' => '2024_11', 'fiscal_description' => '2024 1st Half', 'series_description' => 'Nov 2024', 'created_at' => $date],
-            ['fiscal' => '2024_H2', 'series' => '2024_12', 'fiscal_description' => '2024 1st Half', 'series_description' => 'Dec 2024', 'created_at' => $date],
+            ['fiscal' => '2024_H2', 'series' => '2024_11', 'fiscal_description' => '2024 2nd Half', 'series_description' => 'Nov 2024', 'created_at' => $date],
+            ['fiscal' => '2024_H2', 'series' => '2024_12', 'fiscal_description' => '2024 2nd Half', 'series_description' => 'Dec 2024', 'created_at' => $date],
         ];
 
         foreach ($seriesList as $series) {

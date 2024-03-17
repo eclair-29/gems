@@ -6,13 +6,9 @@
             Purchase Label
             <span class="text-danger fw-bold"> *</span>
         </label>
-        <input 
-            type="text" 
-            class="form-control" 
-            id="{{ $purchase && $action == 'update' ? 'purchase_' . $purchase->id : 'purchase' }}" 
-            name="purchase"
-            value="{{ $purchase->description ?? '' }}"
-        >
+        <input type="text" class="form-control text-uppercase"
+            id="{{ $purchase && $action == 'update' ? 'purchase_' . $purchase->id : 'purchase' }}" name="purchase"
+            value="{{ $purchase->description ?? '' }}">
     </div>
     <div class="col-lg-6 pb-3">
         <label for="purchase_type" class="form-label">
@@ -21,15 +17,8 @@
             <span class="text-danger fw-bold"> *</span>
             @endif
         </label>
-        <select 
-            class="form-select" 
-            id="{{ $action == 'add' ? 'purchase_type' : '' }}" 
-            name="purchase_type"
-        >
-            <option 
-                {{ !$purchase ? 'disabled' : '' }} selected 
-                value="{{ $purchase->purchase_type_id ?? '' }}"
-            >
+        <select class="form-select" id="{{ $action == 'add' ? 'purchase_type' : '' }}" name="purchase_type">
+            <option {{ !$purchase ? 'disabled' : '' }} selected value="{{ $purchase->purchase_type_id ?? '' }}">
                 {{ $purchase->purchaseType->description ?? 'Select Account' }}
             </option>
 
@@ -45,15 +34,8 @@
             <span class="text-danger fw-bold"> *</span>
             @endif
         </label>
-        <select 
-            class="form-select" 
-            id="{{ $action == 'add' ? 'purchase_category' : '' }}" 
-            name="purchase_category"
-        >
-            <option 
-                {{ !$purchase ? 'disabled' : '' }} selected 
-                value="{{ $purchase->purchase_category_id ?? '' }}"
-            >
+        <select class="form-select" id="{{ $action == 'add' ? 'purchase_category' : '' }}" name="purchase_category">
+            <option {{ !$purchase ? 'disabled' : '' }} selected value="{{ $purchase->purchase_category_id ?? '' }}">
                 {{ $purchase->purchaseCategory->description ?? 'Select Account' }}
             </option>
 
@@ -69,20 +51,13 @@
             <span class="text-danger fw-bold"> *</span>
             @endif
         </label>
-        <select 
-            class="form-select" 
-            id="{{ $action == 'add' ? 'dept' : '' }}" 
-            name="dept"
-        >
-            <option
-                {{ !$purchase ? 'disabled' : '' }} selected 
-                value="{{ $purchase->dept_id ?? '' }}"
-            >
+        <select class="form-select" id="{{ $action == 'add' ? 'dept' : '' }}" name="dept">
+            <option {{ !$purchase ? 'disabled' : '' }} selected value="{{ $purchase->dept_id ?? '' }}">
                 {{ $purchase->dept->description ?? 'Select Account' }}
             </option>
 
             @foreach ($depts as $dept)
-                <option value="{{ $dept->id }}">{{ $dept->description}}</option>
+            <option value="{{ $dept->id }}">{{ $dept->description}}</option>
             @endforeach
         </select>
     </div>
@@ -93,20 +68,13 @@
             <span class="text-danger fw-bold"> *</span>
             @endif
         </label>
-        <select 
-            class="form-select" 
-            id="{{ $action == 'add' ? 'status' : '' }}" 
-            name="status"
-        >
-            <option
-                {{ !$purchase ? 'disabled' : '' }} selected 
-                value="{{ $purchase->status_id ?? '' }}"
-            >
+        <select class="form-select" id="{{ $action == 'add' ? 'status' : '' }}" name="status">
+            <option {{ !$purchase ? 'disabled' : '' }} selected value="{{ $purchase->status_id ?? '' }}">
                 {{ Str::title($purchase->status->description ?? 'Select Account') }}
             </option>
 
             @foreach ($statuses as $status)
-                <option value="{{ $status->id }}">{{ Str::title($status->description) }}</option>
+            <option value="{{ $status->id }}">{{ Str::title($status->description) }}</option>
             @endforeach
         </select>
     </div>
@@ -115,13 +83,9 @@
             Allocated Budget - PHP
             <span class="text-danger fw-bold"> *</span>
         </label>
-        <input 
-            type="text" 
-            class="form-control" 
-            id="{{ $purchase && $action == 'update' ? 'allocated_budget_php_' . $purchase->id : 'allocated_budget_php' }}" 
-            name="allocated_budget_php"
-            value="{{ $purchase->allocated_budget_php ?? '' }}"
-        >
+        <input type="text" class="form-control"
+            id="{{ $purchase && $action == 'update' ? 'allocated_budget_php_' . $purchase->id : 'allocated_budget_php' }}"
+            name="allocated_budget_php" value="{{ $purchase->allocated_budget_php ?? '' }}">
     </div>
     <div class="col-12 pb-3">
         <label for="notes" class="form-label">Notes</label>

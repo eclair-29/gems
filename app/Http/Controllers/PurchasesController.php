@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDollarRateRequest;
 use App\Models\Dept;
 use App\Models\User;
 use App\Models\Action;
@@ -14,6 +15,9 @@ use App\Models\PurchaseCategory;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StorePurchaseRequest;
 use App\Http\Requests\UpdatePurchaseRequest;
+use App\Http\Requests\UpdateRateRequest;
+use App\Models\DollarRate;
+use App\Models\Trend;
 
 class PurchasesController extends Controller
 {
@@ -28,6 +32,12 @@ class PurchasesController extends Controller
         return $purchases;
     }
 
+    public function getRateBySeries(Request $request)
+    {
+        $rate = DollarRate::where('series_id', $request->series_id)->first();
+        return $rate;
+    }
+
     public function forkToSeries(Request $request)
     {
         $purchases = Purchase::with(['purchaseCategory', 'purchaseType', 'status'])
@@ -35,6 +45,10 @@ class PurchasesController extends Controller
             ->get();
 
         return $purchases;
+    }
+
+    public function storeDollarRate(StoreDollarRateRequest $request)
+    {
     }
 
     /**
@@ -87,10 +101,12 @@ class PurchasesController extends Controller
      */
     public function store(StorePurchaseRequest $request)
     {
+        $seriesDollarRate = DollarRate::where('series_id', $request->series_id)->first();
+
         $validated = $request->validated();
         $validated['notes'] = $request->notes;
         $validated['series_id'] = $request->series_id;
-        // $validated['allocated_budget_php'] = $request->allocated_budget_php;
+        $validated['allocated_budget_usd'] = $request->allocated_budget_php * ($seriesDollarRate ? $seriesDollarRate->rate : 0);
         DB::beginTransaction();
 
         $action = Action::select('id')
@@ -99,8 +115,18 @@ class PurchasesController extends Controller
 
         $user = User::find(auth()->user()->id);
 
+        $trendStatus = Status::where('category', 'trend')
+            ->where('description', 'draft')
+            ->first();
+
         try {
             $purchase = Purchase::create($validated);
+
+            Trend::create([
+                'status_id' => $trendStatus->id,
+                'series_id' => $validated['series_id'],
+                'purchase_id' => $purchase->id,
+            ]);
 
             createActionLog(auth()->user(), $action, 'Purchase info for id: ' . $purchase->id . ' has been added by ' . $user->name . '.');
 
@@ -150,6 +176,10 @@ class PurchasesController extends Controller
      */
     public function update(UpdatePurchaseRequest $request, $id)
     {
+        $purchase = Purchase::find($id);
+        $series = Series::where('id', $purchase->series_id)->first();
+        $seriesDollarRate = DollarRate::where('series_id', $purchase->series_id)->first();
+
         $validated = $request->validated();
 
         $validated['notes'] = $request->notes;
@@ -157,11 +187,9 @@ class PurchasesController extends Controller
         $validated['purchase_type'] = $request->purchase_type;
         $validated['dept'] = $request->dept;
         $validated['status'] = $request->status;
-        // $validated['allocated_budget_usd'] = $request->allocated_budget_php;
+        $validated['allocated_budget_usd'] = $request->allocated_budget_php * ($seriesDollarRate ? $seriesDollarRate->rate : 0);
 
         DB::beginTransaction();
-
-        $purchase = Purchase::find($id);
 
         $action = Action::select('id')
             ->where('description', 'update purchase')
@@ -170,7 +198,31 @@ class PurchasesController extends Controller
         $user = User::find(auth()->user()->id);
 
         try {
-            $purchase->update($validated);
+            $purchase->update([
+                'status_id' => $validated['status'],
+                'notes' => $validated['notes'],
+                'allocated_budget_php' => $validated['allocated_budget_php'],
+                'allocated_budget_usd' => $validated['allocated_budget_usd'],
+            ]);
+
+            DB::statement('
+                UPDATE purchases
+                SET 
+                    description = ?    
+                    ,purchase_type_id = ?
+                    ,purchase_category_id = ?
+                    ,dept_id = ?
+                WHERE 
+                    series_id IN (SELECT series_id FROM series WHERE fiscal = ?) 
+                    AND description = ?
+            ', [
+                $validated['description'],
+                $validated['purchase_type'],
+                $validated['purchase_category'],
+                $validated['dept'],
+                $series->fiscal,
+                $validated['description'],
+            ]);
 
             createActionLog(auth()->user(), $action, 'Purchase info for id: ' . $id . ' has been updated by ' . $user->name . '.');
 

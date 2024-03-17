@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
             SeriesSeeder::class,
             DeptsSeeder::class,
             PurchasesSeeder::class,
-            DollarPesoRatesSeeder::class,
         ]);
     }
 }

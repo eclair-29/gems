@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DollarRatesController;
 use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\TrendsController;
 use Illuminate\Support\Facades\Route;
@@ -29,8 +30,14 @@ Route::controller(PurchasesController::class)->group(function () {
     Route::get('/purchases/all', 'getPurchases')->name('purchases.all');
 });
 
+Route::controller(DollarRatesController::class)->group(function () {
+    Route::get('/rates', 'index')->name('rates.index');
+    Route::post('/rates', 'store')->name('rates.store');
+});
+
 Route::controller(TrendsController::class)->group(function () {
     Route::get('/trends', 'index')->name('trends.index');
+    Route::get('/trends/overall', 'getOverallTrendByFiscal')->name('trends.overall');
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

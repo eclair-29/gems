@@ -19,6 +19,7 @@ const purchasesTableCols = [
     { data: "description" },
     { data: "purchase_category" },
     { data: "purchase_type" },
+    { data: "dollar_rate" },
     { data: "allocated_budget_php" },
     { data: "allocated_budget_usd" },
     { data: "fiscal" },
@@ -72,21 +73,3 @@ function overrideTable(id) {
 overrideTable("purchases");
 
 // load datatable data on page load
-function getPurchases(series_id) {
-    $.ajax({
-        type: "get",
-        url: `${baseUrl}/purchases/all?series_id=${series_id}`,
-        success: function (response) {
-            purchases_table.clear();
-            purchases_table.rows.add(response.data).draw();
-        },
-        error: function (error) {
-            console.log(error);
-        },
-    });
-}
-
-// load datatable data
-$("#series_select").on("change", function () {
-    getPurchases($(this).val());
-});

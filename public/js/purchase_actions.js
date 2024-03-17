@@ -20,6 +20,7 @@ function associateErrors(errors, fields) {
     if (errors.status) getMessage(errors.status, fields.status);
     if (errors.allocated_budget_php)
         getMessage(errors.allocated_budget_php, fields.allocated_budget_php);
+    if (errors.rate) getMessage(errors.rate, fields.rate);
 }
 
 function clearErrorMsg(fields) {
@@ -77,7 +78,7 @@ $("body").on("submit", ".update-purchase", function (e) {
 
             getPurchases($("#series_select").val());
 
-            updateModal.hide();
+            updateModal.toggle();
         },
         error: function (error) {
             associateErrors(error.responseJSON.errors, fields);
@@ -107,6 +108,8 @@ $("#add_purchase_fields").on("submit", function (e) {
         `#${$(this).closest(".popup").attr("id")}`
     );
 
+    console.log(updateModal);
+
     clearAlert(alert);
 
     $.ajax({
@@ -130,5 +133,95 @@ $("#add_purchase_fields").on("submit", function (e) {
     });
 });
 
-const date = new Date();
-console.log("current date: " + date.getMonth());
+$("#dollar_rate_fields").on("submit", function (e) {
+    e.preventDefault();
+
+    const action = $(this).attr("action");
+
+    const fields = {
+        rate: $("#rate"),
+    };
+
+    console.log(fields.rate.val());
+
+    clearErrorMsg(fields);
+
+    const alert = $("#purchases").find(".alert");
+    const updateModal = bootstrap.Modal.getOrCreateInstance(
+        `#${$(this).closest(".popup").attr("id")}`
+    );
+
+    clearAlert(alert);
+
+    $.ajax({
+        url: `${action}?series_id=${$("#series_select").val()}`,
+        type: "post",
+        data: $(this).serialize(),
+        success: function (data) {
+            alert.attr("hidden", false);
+            if (data.response === "success")
+                alert.attr("class", "alert alert-success").text(data.alert);
+            else alert.attr("class", "alert alert-danger").text(data.alert);
+
+            getPurchases($("#series_select").val());
+
+            updateModal.toggle();
+            $("#dollar_rate_fields").trigger("reset");
+        },
+        error: function (error) {
+            associateErrors(error.responseJSON.errors, fields);
+        },
+    });
+});
+
+function disableControls(toggle) {
+    $("#add_purchase_btn").attr("disabled", toggle);
+    $("#fork_btn").attr("disabled", toggle);
+    $("#dollar_rate_btn").attr("disabled", toggle);
+    $("#download_btn").attr(
+        "class",
+        toggle ? "btn btn-outline-success disabled" : "btn btn-outline-success"
+    );
+}
+
+function getPurchases(series_id) {
+    $.ajax({
+        type: "get",
+        url: `${BASE_URL}/purchases/all?series_id=${series_id}`,
+        success: function (response) {
+            purchases_table.clear();
+            purchases_table.rows.add(response.data).draw();
+        },
+        error: function (error) {
+            console.log(error);
+        },
+    });
+}
+
+function getDollarRate(series_id) {
+    $.ajax({
+        type: "get",
+        url: `${BASE_URL}/rates?series_id=${series_id}`,
+        success: function (response) {
+            $("#rate").val(response.rate);
+        },
+        error: function (error) {
+            console.log(error);
+        },
+    });
+}
+
+// load datatable data
+$("#series_select").on("change", function () {
+    getPurchases($(this).val());
+    getDollarRate($(this).val());
+    disableControls(false);
+
+    $("#rate_label").html(
+        `Dollar to Peso rate for <span class="fw-bold text-success">${$(this)
+            .find(":selected")
+            .text()}</span>`
+    );
+});
+
+disableControls(true);

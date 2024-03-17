@@ -21,13 +21,13 @@
                             </select>
 
                             <div class="btn-group px-3" role="group">
-                                <a class="btn btn-outline-success" id="download_worksheet">
+                                <a class="btn btn-outline-success" id="download_btn">
                                     Download
                                 </a>
-                                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
-                                    data-bs-target="#series_fork_popup">Fork</button>
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#add_purchase_popup">
+                                <button id="fork_btn" type="button" class="btn btn-outline-success"
+                                    data-bs-toggle="modal" data-bs-target="#series_fork_popup">Fork</button>
+                                <button id="add_purchase_btn" type="button" class="btn btn-success"
+                                    data-bs-toggle="modal" data-bs-target="#add_purchase_popup">
                                     <!-- <i data-feather="plus"></i> -->
                                     Add Purchase
                                 </button>
@@ -38,10 +38,9 @@
                                 data-bs-target="#purchase_requests_popup">Requests</button> 
                         </div>-->
                         <div class="input-group w-auto">
-                            <input type="text" class="form-control border-danger fw-bold text-center" readonly
-                                value="USD 1.00" style="width: 80px">
-                            <button class="btn btn-outline-secondary border-danger bg-danger text-white fw-bold"
-                                type="button" id="button-addon2">PHP 55.50</button>
+                            <button class="btn btn-outline-success fw-bold rounded-circle border-2" type="button"
+                                id="dollar_rate_btn" data-bs-toggle="modal"
+                                data-bs-target="#dollar_rate_popup">$</button>
                         </div>
                     </div>
 
@@ -54,6 +53,7 @@
                                 <th class="text-center fw-bold">Description</th>
                                 <th class="text-center fw-bold">Group</th>
                                 <th class="text-center fw-bold">Account</th>
+                                <th class="text-center fw-bold">Dollar Rate</th>
                                 <th class="text-center fw-bold">Budget - PHP</th>
                                 <th class="text-center fw-bold">Budget - USD</th>
                                 <th class="text-center fw-bold">Fiscal</th>
@@ -88,6 +88,11 @@
     :post="''">
     {{--
     <x-tickets-table :tickets="$tickets" /> --}}
+</x-popup>
+
+<x-popup :id="'dollar_rate_popup'" :title="'Change Dollar to Peso Rate'" :size="'lg'" :button="'Save'" :dnone="false"
+    :post="'dollar_rate_fields'">
+    @include('purchases.partials.add-dollar-rate')
 </x-popup>
 
 {{-- @foreach($tickets as $ticket) --}}

@@ -26,7 +26,7 @@
     <script src="{{ asset('js/libs/feather.js') }}"></script>
 
     <script>
-        const baseUrl = "{{ url('') }}";
+        const BASE_URL = "{{ url('') }}";
     </script>
 </head>
 

@@ -29,7 +29,7 @@ class StorePurchaseRequest extends FormRequest
             'purchase' => 'required',
             'dept' => 'required',
             'status' => 'required',
-            'allocated_budget_php' => 'required',
+            'allocated_budget_php' => ['required', 'regex:/^(([0-9]*)(\.([0-9]{0,2}+))?)$/'],
         ];
     }
 
