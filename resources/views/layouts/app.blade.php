@@ -20,6 +20,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
+    <script src="{{ asset('js/libs/lodash.js') }}"></script>
     <script src="{{ asset('js/libs/jquery.js') }}"></script>
     <script src="{{ asset('js/libs/datatables.js') }}"></script>
     <script src="{{ asset('js/libs/bootstrap.js') }}"></script>

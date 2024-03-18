@@ -17,6 +17,7 @@ class TrendsController extends Controller
     {
         $query = DB::select(
             "SELECT
+                pc.id as purchase_category_id,
                 se.series_description,
                 pc.description as purchase_category,
                 SUM(p.allocated_budget_php) as total_allocated_budget_php,
@@ -25,13 +26,13 @@ class TrendsController extends Controller
                 SUM(t.actual_usd) as total_actual_usd,
                 SUM(t.saving_php) as total_saving_php,
                 SUM(t.saving_usd) as total_saving_usd
-            FROM trends t
-                LEFT JOIN series se ON t.series_id = se.id
+            FROM series se
+                LEFT JOIN  trends t ON se.id = t.series_id
                 LEFT JOIN purchases p ON t.purchase_id = p.id
                 LEFT JOIN purchase_categories pc ON p.purchase_category_id = pc.id
             WHERE se.fiscal = ?
             GROUP BY 
-                pc.description, se.series_description;",
+                pc.id, se.series_description",
             [$request->fiscal]
         );
 

@@ -44,6 +44,8 @@
     </div>
 </div>
 
+<script src="{{ asset('js/libs/chart.utils.js') }}"></script>
 <script src="{{ asset('js/libs/chart.js') }}"></script>
+<script src="{{ asset('js/libs/chart.datalabels.js') }}"></script>
 <script src="{{ asset('js/trends.js') }}"></script>
 @endSection
